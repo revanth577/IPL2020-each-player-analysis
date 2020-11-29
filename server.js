@@ -6,6 +6,7 @@ let fs=require("fs")
 let matchDetails=require("./matches.js")
 
 
+fs.mkdirSync("IPL2020")
 
 request("https://www.cricbuzz.com/cricket-series/3130/indian-premier-league-2020",requireUrl)
 

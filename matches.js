@@ -1,7 +1,8 @@
 let request=require("request")
 let cheerio=require("cheerio")
 let fs=require("fs")
-
+let path=require("path")
+var json2xls = require('json2xls');
 
 function matchDetails(url){
     
@@ -80,11 +81,11 @@ function getScoreCard(html)
     let $=cheerio.load(html)
     
     let inn1=$("#innings_1 div.cb-col.cb-col-100.cb-ltst-wgt-hdr")
-    
+    let inn2=$("#innings_2 div.cb-col.cb-col-100.cb-ltst-wgt-hdr")
     let batsmens=$(inn1).find(".cb-col.cb-col-100.cb-scrd-itms")
-    
+   let opponent=$(inn2).find(".cb-col.cb-col-100.cb-scrd-hdr-rw").text().split("Innings")[0].trim()
     let team=$(inn1).find(".cb-col.cb-col-100.cb-scrd-hdr-rw").text().split("Innings")[0].trim()
-    console.log(team)
+    
     
     for(i=0;i<batsmens.length;i++)
     {
@@ -92,7 +93,8 @@ function getScoreCard(html)
         {
             break;
         }
-        let batsmen=$(batsmens[i]).find(".cb-col.cb-col-27").text()
+        let batsmen=$(batsmens[i]).find(".cb-col.cb-col-27").text().trim()
+        batsmen=batsmen.split(" ")[0]
         
         let runs=$(batsmens[i]).find(".cb-col.cb-col-8.text-right.text-bold").text()
         let remaining=$(batsmens[i]).find(".cb-col.cb-col-8.text-right")
@@ -101,9 +103,8 @@ function getScoreCard(html)
         let fours=$(remaining[2]).text()
         let sixes=$(remaining[3]).text()
         let strikeRate=$(remaining[4]).text()
-        console.log(`${batsmen} scored ${runs} in ${balls} balls with ${fours} fours and ${sixes} sixes with strike rate ${strikeRate} `)
         
-        
+        handlePlayer(batsmen,runs,balls,fours,sixes,team,opponent,strikeRate)
         
         
         
@@ -120,12 +121,10 @@ function getScoreCard(html)
     
      $=cheerio.load(html)
     
-      let inn2=$("#innings_2 div.cb-col.cb-col-100.cb-ltst-wgt-hdr")
-    
+      
     batsmens=$(inn2).find(".cb-col.cb-col-100.cb-scrd-itms")
+    opponent=team
     team=$(inn2).find(".cb-col.cb-col-100.cb-scrd-hdr-rw").text().split("Innings")[0].trim()
-    console.log(team)
-    
     
     for(i=0;i<batsmens.length;i++)
     {
@@ -136,6 +135,7 @@ function getScoreCard(html)
         }
         
         let batsmen=$(batsmens[i]).find(".cb-col.cb-col-27").text()
+        
          let runs=$(batsmens[i]).find(".cb-col.cb-col-8.text-right.text-bold").text()
         let remaining=$(batsmens[i]).find(".cb-col.cb-col-8.text-right")
         let balls=$(remaining[1]).text()
@@ -143,7 +143,8 @@ function getScoreCard(html)
         let fours=$(remaining[2]).text()
         let sixes=$(remaining[3]).text()
         let strikeRate=$(remaining[4]).text()
-        console.log(`${batsmen} scored ${runs} in ${balls} balls with ${fours} fours and ${sixes} sixes with strike rate ${strikeRate} `)
+         handlePlayer(batsmen,runs,balls,fours,sixes,team,opponent,strikeRate)
+        
         
         
         
@@ -152,6 +153,67 @@ function getScoreCard(html)
 console.log("############################################################################################################################")  
 }
 
+
+function handlePlayer(player,runs,balls,fours,sixes,team,opponent,strikeRate)
+{
+    
+    let directory=path.join(__dirname,"IPL2020",team)
+    
+    if(!fs.existsSync(directory))
+    {
+       fs.mkdirSync(directory)
+    }
+    
+    let filePath=path.join(__dirname,"IPL2020",team,player+".json")
+    
+    if(!fs.existsSync(filePath))
+    {
+       let data=[]
+        let entry={}
+        entry.runs=runs
+        entry.balls=balls
+        entry.fours=fours
+        entry.sixes=sixes
+        entry.opponent=opponent
+        entry.strikeRate=strikeRate
+        
+        data.push(entry)
+        
+        data=JSON.stringify(data)
+        fs.writeFileSync(filePath,data)
+    //   var xls = json2xls(data);
+    //     fs.writeFileSync(filePath+".xlsx",xls,'binary')
+        
+        
+        
+        
+        
+    }
+    else{
+        
+        let data=fs.readFileSync(filePath,"utf-8")
+        
+        data=JSON.parse(data)
+        let entry={}
+      entry.runs=runs
+        entry.balls=balls
+        entry.fours=fours
+        entry.sixes=sixes
+        entry.opponent=opponent
+        entry.strikeRate=strikeRate
+        
+        data.push(entry)
+        data=JSON.stringify(data)
+        fs.writeFileSync(filePath,data)
+        // var xls = json2xls(data);
+        // fs.writeFileSync(filePath+".xlsx", xls, 'binary');
+        
+        
+        
+    }
+    
+    
+}
 
 
 
