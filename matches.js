@@ -2,7 +2,7 @@ let request=require("request")
 let cheerio=require("cheerio")
 let fs=require("fs")
 let path=require("path")
-var json2xls = require('json2xls');
+
 
 function matchDetails(url){
     
@@ -94,7 +94,20 @@ function getScoreCard(html)
             break;
         }
         let batsmen=$(batsmens[i]).find(".cb-col.cb-col-27").text().trim()
-        batsmen=batsmen.split(" ")[0]
+        batsmen=batsmen.split(" ")
+        let name="";
+        for(var k=0;k<batsmen.length;k++)
+        {
+            if(batsmen[k][0]!='(')
+            {
+                name+=batsmen[k];
+            }
+            else{
+                break;
+            }
+        }
+        batsmen=name;
+        
         
         let runs=$(batsmens[i]).find(".cb-col.cb-col-8.text-right.text-bold").text()
         let remaining=$(batsmens[i]).find(".cb-col.cb-col-8.text-right")
@@ -135,6 +148,19 @@ function getScoreCard(html)
         }
         
         let batsmen=$(batsmens[i]).find(".cb-col.cb-col-27").text()
+        batsmen=batsmen.split(" ")
+         let name="";
+        for(var k=0;k<batsmen.length;k++)
+        {
+            if(batsmen[k][0]!='(')
+            {
+                name+=batsmen[k];
+            }
+            else{
+                break;
+            }
+        }
+        batsmen=name;
         
          let runs=$(batsmens[i]).find(".cb-col.cb-col-8.text-right.text-bold").text()
         let remaining=$(batsmens[i]).find(".cb-col.cb-col-8.text-right")

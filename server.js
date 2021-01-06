@@ -2,7 +2,7 @@
 let request=require("request")
 let cheerio=require("cheerio")
 let fs=require("fs")
-
+const generatePdf=require("./generatePdf.js")
 let matchDetails=require("./matches.js")
 
 
@@ -69,7 +69,7 @@ function everyMatch(html)
     
     let $=cheerio.load(html)
     let matches=$(".cb-col-60.cb-col.cb-srs-mtchs-tm a.text-hvr-underline")
-    
+    var i=0
     
     for(i=0;i<matches.length;i++)
     {
@@ -80,6 +80,13 @@ function everyMatch(html)
         matchDetails(fullLink)
         
    
+    }
+    
+    if(i==matches.length)
+    {
+        setTimeout(function(){ 
+            generatePdf()
+        }, 10000);
     }
     
     
