@@ -1,46 +1,35 @@
 
 const fs=require("fs");
 
-const pdfConverter=require("./pdfConverter.js")
+const convertToPdf=require("./pdfConverter.js")
 
-function generatePdf()
+async function generatePdf()
 {
-    console.log("generating pdf");
-    
+console.log("generating pdfs")
     let directory=__dirname+"/"+"IPL2020";
+   
     
-    fs.readdir(directory,(err,folders)=>{
-        
-        
-        for(var i=0;i<folders.length;i++)
+   
+    const folders=fs.readdirSync(directory);
+ 
+    for(var i=0;i<folders.length;i++)
         {
-        let folderPath=directory+"/"+folders[i];
-        
-        fs.readdir(folderPath,(err,files)=>{
-            
-            
+            let folderPath=directory+"/"+folders[i];
+           let files= fs.readdirSync(folderPath);
+           
             for(var k=0;k<files.length;k++)
             {
                 let filePath=folderPath+"/"+files[k];
+                
                 let data=fs.readFileSync(filePath);
-                
                 data=JSON.parse(data);
-                
-                pdfConverter(data,filePath);
-                
+               await convertToPdf(data,filePath);
+        
             }
             
-        })
+            
             
         }
-        
-        
-        
-        
-        
-    })
-    
-
 }
 
 

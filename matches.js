@@ -182,6 +182,94 @@ console.log("###################################################################
 
 function handlePlayer(player,runs,balls,fours,sixes,team,opponent,strikeRate)
 {
+    if(player=="Dhoni")
+    {
+        player="MSDhoni";
+    }
+    else if(player=="Ashwin")
+    {
+        player="RavichandranAshwin";
+    }
+    else if(player=="Pant")
+    {
+        player="Rishabhpant";
+    }
+    else if(player=="Dhawan")
+    {
+        player="ShikharDhawan";
+    }
+    else if(player=="Rahane")
+    {
+        player="AjinkyaRahane";
+    }
+    else if(player=="Nortje")
+    {
+        player="AnrichNortje";
+    }
+    else if(player=="Axar")
+    {
+        player="AxarPatel";
+    }
+    else if(player=="Hetmyer")
+    {
+        player="ShimronHetmyer";
+    }
+    
+    else if(player=="Stoinis")
+    {
+        player="MarcusStoinis";
+    }
+    else if(player=="Rayudu")
+    {
+        player="AmbatiRayudu";
+    }
+    else if(player=="DChahar")
+    {
+        player="DeepakChahar";
+    }
+    else if(player=="DJBravo")
+    {
+        player="DwayneBravo";
+    }
+    else if(player=="Thakur")
+    {
+        player="ShardulThakur";
+    }
+    else if(player=="Watson")
+    {
+        player="ShaneWatson";
+    }
+    else if(player=="Gayle")
+    {
+        player="ChrisGayle"
+    }
+    else if(player=="Neesham")
+    {
+        player="JamesNeesham";
+    }
+    else if(player=="Maxwell")
+    {
+        player="GlennMaxwell";
+    }
+    else if(player=="Nair")
+    {
+        player="KarunNair";
+    }
+    else if(player=="Rahul" or player=="LokeshRahul")
+    {
+        player="KLRahul";
+    }
+    else if(player=="Mandeep")
+    {
+        player="MandeepSingh";
+    }
+    else if(player=="Pooran")
+    {
+        player="NicholasPooran";
+    }
+    else if(player==)
+    
+    
     
     let directory=path.join(__dirname,"IPL2020",team)
     

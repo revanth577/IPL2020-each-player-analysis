@@ -3,10 +3,11 @@ let request=require("request")
 let cheerio=require("cheerio")
 let fs=require("fs")
 const generatePdf=require("./generatePdf.js")
-let matchDetails=require("./matches.js")
+let matchDetails=require("./matches.js");
 
 
 fs.mkdirSync("IPL2020")
+
 
 request("https://www.cricbuzz.com/cricket-series/3130/indian-premier-league-2020",requireUrl)
 
@@ -85,36 +86,14 @@ function everyMatch(html)
     if(i==matches.length)
     {
         setTimeout(function(){ 
+            
             generatePdf()
+            
         }, 12000);
     }
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

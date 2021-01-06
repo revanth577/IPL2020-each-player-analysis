@@ -1,22 +1,20 @@
 const pug=require("pug");
 const puppeteer=require("puppeteer")
-
-
-async function  convertToPdf(player,filePath)
+const fs=require("fs");
+async  function  convertToPdf(player,filePath)
 {
+    
+    fs.unlinkSync(filePath);
+    filePath=filePath.split(".json")[0];
+    console.log(filePath);
+  
 
-// player=[
-//     {"runs":"0","balls":"5","fours":"0","sixes":"0","opponent":"Mumbai Indians","strikeRate":"0.00"},
-//     {"runs":"2","balls":"2","fours":"0","sixes":"0","opponent":"Sunrisers Hyderabad","strikeRate":"100.00"}
-//     ]
-
-filePath=filePath.split(".json")[0];
 let renderData=pug.renderFile('index.pug', {
   player:player
 });
 
-console.log(renderData)
-const browser = await puppeteer.launch();
+  
+ const browser = await puppeteer.launch();
 const page = await browser.newPage();
 await page.setContent(`
 <!DOCTYPE html>
@@ -36,9 +34,11 @@ ${renderData}
 </html>
 `)
 const buffer = await page.pdf({path:filePath+".pdf", format: "A4" });
+console.log("pdf done")
 await browser.close();
 
 }
+
 
 
 
