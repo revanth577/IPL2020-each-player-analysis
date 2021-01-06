@@ -21,12 +21,12 @@ function generatePdf()
             
             for(var k=0;k<files.length;k++)
             {
-                let filePath=folderPath+"/"+files[i];
+                let filePath=folderPath+"/"+files[k];
                 let data=fs.readFileSync(filePath);
                 
-                data=JSON.parse(data)
+                data=JSON.parse(data);
                 
-                pdfConverter(data,filePath)
+                pdfConverter(data,filePath);
                 
             }
             

@@ -86,7 +86,7 @@ function everyMatch(html)
     {
         setTimeout(function(){ 
             generatePdf()
-        }, 10000);
+        }, 12000);
     }
     
     
